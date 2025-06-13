@@ -1,23 +1,39 @@
 // Yêu cầu: 
 // Highlight tất cả các từ có độ dài lớn hơn hoặc bằng 5 ký tự trong đoạn văn (background = “yellow”)
-const allText = document.querySelector(".text");
+const alltext = document.querySelector(".text");
 
-// Step 1: Get the full paragraph text
-const words = allText.textContent.split(/\b/); // split by word boundaries
+const highlightWords = (element) => {
+const contentOfParagraph = element.textContent;
+const words = contentOfParagraph.split(/\s+/);      
+const highlightText = words.map(word => {
+  const cleanword = word.replace(/[^a-zA-Z]/g, '');
+    if(cleanword.length > 4){
+        return `<span style="background-color: yellow">${word}</span>`;
+        } else {
+            return word;
+        }
+    }).join(' ');
+  element.innerHTML = highlightText;
+ };
 
-// Step 2: Rebuild HTML with long words wrapped in a span
-const highlightedHTML = words.map(word => {
-  return word.length > 5 && /\w/.test(word)
-    ? `<span style="background-color: yellow">${word}</span>`
-    : word;
-}).join("");
-
-// Step 3: Replace the original content with highlighted HTML
-allText.innerHTML = highlightedHTML;
-
+highlightWords(alltext);
 
 // Thêm link hiển thị text “facebook” link đến trang facebook.com ở sau thẻ p
 
+const facebookLink = document.createElement("a") ;
+facebookLink.href = "facebook.com" ;
+facebookLink.textContent = "link facebook";
+// console.log(facebookLink);
+
+const textBox = document.querySelector(".text") ;
+textBox.style.height = "auto";
+textBox.after(facebookLink); /*Append chưa cho khoảng cách , after mới cho khoảng cách*/
+
+
 // Đếm số từ có trong đoạn văn. Tạo 1 thẻ div để hiển thị số từ
+const wordCount = document.createElement("div") ;
+const vanBan = alltext.textContent ;
+wordCount.innerHTML = `Word count: ${vanBan.split(' ').length}`;
+textBox.after(wordCount);
 
 // Thay thế ký hiệu (, - dấu phẩy) => 🤔 và (. - dấu chấm) => 😲
